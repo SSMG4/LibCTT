@@ -263,8 +263,20 @@ def main():
     parser.add_argument("--limit-disasm", type=int, default=DISASM_LINE_LIMIT, help=f"Max lines of disassembly (default: {DISASM_LINE_LIMIT})")
     args = parser.parse_args()
 
-    # Allow override of globals for advanced users
+    def main():
     global MAX_SIZE_MB, DISASM_LINE_LIMIT
+    parser = argparse.ArgumentParser(
+        description="LibCTT - Binary Library to Human-Readable TXT Converter",
+        epilog="Supports .dll, .so, .lib, .a. Output is a TXT report. "
+               "Requires system tools like objdump, dumpbin, readelf, nm, lib.exe for full features."
+    )
+    parser.add_argument("files", nargs="+", help="Input library files (.so, .dll, .lib, .a)")
+    parser.add_argument("-o", "--output-dir", default=None, help="Directory to save reports (default: same as input file)")
+    parser.add_argument("--max-size", type=int, default=MAX_SIZE_MB, help=f"Max file size in MB (default: {MAX_SIZE_MB})")
+    parser.add_argument("--limit-disasm", type=int, default=DISASM_LINE_LIMIT, help=f"Max lines of disassembly (default: {DISASM_LINE_LIMIT})")
+    args = parser.parse_args()
+
+    # Allow override of globals for advanced users
     MAX_SIZE_MB = args.max_size
     DISASM_LINE_LIMIT = args.limit_disasm
 
